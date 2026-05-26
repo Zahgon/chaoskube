@@ -10,7 +10,4 @@ type Noop struct {
 	Calls int
 }
 
-func (t *Noop) NotifyPodTermination(pod v1.Pod) error {
-	t.Calls++
-	return nil
-}
+func (t *Noop) NotifyPodTermination(pod v1.Pod) error { _ = "STUB: not implemented"; return nil }

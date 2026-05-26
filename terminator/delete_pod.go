@@ -20,28 +20,17 @@ type DeletePodTerminator struct {
 
 // NewDeletePodTerminator creates and returns a DeletePodTerminator object.
 func NewDeletePodTerminator(client kubernetes.Interface, logger log.FieldLogger, gracePeriod time.Duration) *DeletePodTerminator {
-	return &DeletePodTerminator{
-		client:      client,
-		logger:      logger.WithField("terminator", "DeletePod"),
-		gracePeriod: gracePeriod,
-	}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Terminate sends a request to Kubernetes to delete the pod.
 func (t *DeletePodTerminator) Terminate(ctx context.Context, victim v1.Pod) error {
-	t.logger.WithFields(log.Fields{
-		"namespace": victim.Namespace,
-		"name":      victim.Name,
-	}).Debug("calling deletePod endpoint")
-
-	return t.client.CoreV1().Pods(victim.Namespace).Delete(ctx, victim.Name, deleteOptions(t.gracePeriod))
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func deleteOptions(gracePeriod time.Duration) metav1.DeleteOptions {
-	if gracePeriod < 0 {
-		return metav1.DeleteOptions{}
-	}
-
-	inSeconds := int64(gracePeriod.Seconds())
-	return metav1.DeleteOptions{GracePeriodSeconds: &inSeconds}
+	_ = "STUB: not implemented"
+	return *new(metav1.DeleteOptions)
 }

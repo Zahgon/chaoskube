@@ -2,28 +2,23 @@ package main
 
 import (
 	"context"
-	"fmt"
 	"io"
 	"math/rand"
-	"net/http"
 	_ "net/http/pprof"
 	"os"
 	"os/signal"
-	"path"
 	"regexp"
 	"runtime"
 	"syscall"
 	"time"
 
 	"github.com/alecthomas/kingpin/v2"
-	"github.com/prometheus/client_golang/prometheus/promhttp"
 	log "github.com/sirupsen/logrus"
 
 	v1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/labels"
 	"k8s.io/client-go/kubernetes"
 	_ "k8s.io/client-go/plugin/pkg/client/auth"
-	"k8s.io/client-go/tools/clientcmd"
 	"k8s.io/klog"
 
 	"github.com/linki/chaoskube/chaoskube"
@@ -64,9 +59,7 @@ var (
 	clientNamespaceScope string
 )
 
-func cliEnvVar(name string) string {
-	return envVarPrefix + name
-}
+func cliEnvVar(name string) string { _ = "STUB: not implemented"; return "" }
 
 func init() {
 	rand.Seed(time.Now().UTC().UnixNano())
@@ -262,78 +255,18 @@ func main() {
 	chaoskube.Run(ctx, ticker.C)
 }
 
-func newClient() (*kubernetes.Clientset, error) {
-	if kubeconfig == "" {
-		if _, err := os.Stat(clientcmd.RecommendedHomeFile); err == nil {
-			kubeconfig = clientcmd.RecommendedHomeFile
-		}
-	}
-
-	log.WithFields(log.Fields{
-		"kubeconfig": kubeconfig,
-		"master":     master,
-	}).Debug("using cluster config")
-
-	config, err := clientcmd.BuildConfigFromFlags(master, kubeconfig)
-	if err != nil {
-		return nil, err
-	}
-
-	client, err := kubernetes.NewForConfig(config)
-	if err != nil {
-		return nil, err
-	}
-
-	serverVersion, err := client.Discovery().ServerVersion()
-	if err != nil {
-		return nil, err
-	}
-
-	log.WithFields(log.Fields{
-		"master":        config.Host,
-		"serverVersion": serverVersion,
-	}).Info("connected to cluster")
-
-	return client, nil
-}
+func newClient() (*kubernetes.Clientset, error) { _ = "STUB: not implemented"; return nil, nil }
 
 func parseSelector(str string) labels.Selector {
-	selector, err := labels.Parse(str)
-	if err != nil {
-		log.WithFields(log.Fields{
-			"selector": str,
-			"err":      err,
-		}).Fatal("failed to parse selector")
-	}
-	return selector
+	_ = "STUB: not implemented"
+	return *new(labels.Selector)
 }
 
-func createNotifier() notifier.Notifier {
-	notifiers := notifier.New()
-	if slackWebhook != "" {
-		notifiers.Add(notifier.NewSlackNotifier(slackWebhook))
-	}
+func createNotifier() notifier.Notifier { _ = "STUB: not implemented"; return *new(notifier.Notifier) }
 
-	return notifiers
-}
+func serveMetrics() { _ = "STUB: not implemented"; return }
 
-func serveMetrics() {
-	http.Handle("/metrics", promhttp.Handler())
-	http.HandleFunc("/healthz", func(w http.ResponseWriter, _ *http.Request) {
-		fmt.Fprintln(w, "OK")
-	})
-	http.HandleFunc("/", func(w http.ResponseWriter, _ *http.Request) {
-		fmt.Fprintln(w, adminPage)
-	})
-	if err := http.ListenAndServe(metricsAddress, nil); err != nil {
-		log.WithField("err", err).Fatal("failed to start HTTP server")
-	}
-}
-
-func prettifyCaller(f *runtime.Frame) (string, string) {
-	_, filename := path.Split(f.File)
-	return "", fmt.Sprintf("%s:%d", filename, f.Line)
-}
+func prettifyCaller(f *runtime.Frame) (string, string) { _ = "STUB: not implemented"; return "", "" }
 
 var adminPage = `<html>
 	<head>

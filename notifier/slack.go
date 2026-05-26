@@ -1,9 +1,6 @@
 package notifier
 
 import (
-	"bytes"
-	"encoding/json"
-	"fmt"
 	"net/http"
 	"time"
 
@@ -46,64 +43,13 @@ type attachment struct {
 	MrkdwnIn   []string     `json:"mrkdwn_in,omitempty"`
 }
 
-func NewSlackNotifier(webhook string) *Slack {
-	return &Slack{
-		Webhook: webhook,
-		Client:  &http.Client{Timeout: DefaultTimeout},
-	}
-}
+func NewSlackNotifier(webhook string) *Slack { _ = "STUB: not implemented"; return nil }
 
-func (s Slack) NotifyPodTermination(pod v1.Pod) error {
-	title := "Chaos event - Pod termination"
-	text := fmt.Sprintf("pod %s has been selected by chaos-kube for termination", pod.Name)
-
-	short := len(pod.Namespace) < 20 && len(pod.Name) < 20
-	fields := []slackField{
-		{
-			Title: "namespace",
-			Value: pod.Namespace,
-			Short: &short,
-		},
-		{
-			Title: "pod",
-			Value: pod.Name,
-			Short: &short,
-		},
-	}
-
-	message := createSlackRequest(title, text, fields)
-	return s.sendSlackMessage(message)
-}
+func (s Slack) NotifyPodTermination(pod v1.Pod) error { _ = "STUB: not implemented"; return nil }
 
 func createSlackRequest(title string, text string, fields []slackField) slackMessage {
-	return slackMessage{
-		Attachments: []attachment{{
-			Title:  title,
-			Text:   text,
-			Footer: "chaos-kube",
-			Color:  NotificationColor,
-			Fields: fields,
-		}},
-	}
+	_ = "STUB: not implemented"
+	return *new(slackMessage)
 }
 
-func (s Slack) sendSlackMessage(message slackMessage) error {
-	messageBody, err := json.Marshal(message)
-	if err != nil {
-		return err
-	}
-	req, err := http.NewRequest(http.MethodPost, s.Webhook, bytes.NewBuffer(messageBody))
-	if err != nil {
-		return err
-	}
-	req.Header.Add("Content-Type", "application/json")
-	res, err := s.Client.Do(req)
-	if err != nil {
-		return err
-	}
-	if res.StatusCode != http.StatusOK {
-		return fmt.Errorf("unexpected status code %d from slack webhook %s", res.StatusCode, s.Webhook)
-	}
-
-	return nil
-}
+func (s Slack) sendSlackMessage(message slackMessage) error { _ = "STUB: not implemented"; return nil }

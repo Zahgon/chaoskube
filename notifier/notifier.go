@@ -1,7 +1,6 @@
 package notifier
 
 import (
-	multierror "github.com/hashicorp/go-multierror"
 	v1 "k8s.io/api/core/v1"
 )
 
@@ -13,20 +12,8 @@ type Notifiers struct {
 	notifiers []Notifier
 }
 
-func New() *Notifiers {
-	return &Notifiers{notifiers: make([]Notifier, 0)}
-}
+func New() *Notifiers { _ = "STUB: not implemented"; return nil }
 
-func (m *Notifiers) NotifyPodTermination(pod v1.Pod) error {
-	var result error
-	for _, n := range m.notifiers {
-		if err := n.NotifyPodTermination(pod); err != nil {
-			result = multierror.Append(result, err)
-		}
-	}
-	return result
-}
+func (m *Notifiers) NotifyPodTermination(pod v1.Pod) error { _ = "STUB: not implemented"; return nil }
 
-func (m *Notifiers) Add(notifier Notifier) {
-	m.notifiers = append(m.notifiers, notifier)
-}
+func (m *Notifiers) Add(notifier Notifier) { _ = "STUB: not implemented"; return }
